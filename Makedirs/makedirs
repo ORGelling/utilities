@@ -1,0 +1,51 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+print "First: ";
+chomp(my $start = <STDIN>);
+print "Last: ";
+chomp(my $end = <STDIN>);
+
+# Validate input
+if ($start !~ /^\d+$/ || $end !~ /^\d+$/ || $start > $end) {
+    die "Entries must be valid.\n";
+}
+
+# Create metadata.txt in the current directory, only if it doesn't exist
+if (-e 'metadata.txt') {
+    warn "metadata.txt already exists.\n";
+} else {
+    open(my $meta_fh, '>', 'metadata.txt') or die "Cannot create metadata.txt: $!";
+    print $meta_fh "Set: \n\nAuthors: \n\nRater: ";
+    close($meta_fh);
+}
+
+for my $num ($start .. $end) {
+    my $dir = "$num";
+    if (!mkdir $dir) {
+        warn "$dir already exists.\n";
+    }
+
+    # Create order.txt only if it doesn't exist
+    my $order_file = "$dir/order.txt";
+    if (-e $order_file) {
+        warn "$order_file already exists.\n";
+    } else {
+        open(my $order_fh, '>', $order_file) or warn "Cannot create $order_file: $!";
+        print $order_fh "ex${num}info.txt\n";
+        close($order_fh);
+    }
+
+    # Create ex[number]info.txt only if it doesn't exist
+    my $info_file = "$dir/ex${num}info.txt";
+    if (-e $info_file) {
+        warn "$info_file already exists.\n";
+    } else {
+        open(my $info_fh, '>', $info_file) or warn "Cannot create $info_file: $!";
+        print $info_fh "Exercise ${num}: \n";
+        close($info_fh);
+    }
+}
+
+system("ls");
