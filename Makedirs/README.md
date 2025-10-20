@@ -11,3 +11,6 @@ Put it in /usr/bin/ and give it proper perms (chmod -x makedirs) and it should
 be good to go!
 
 An example of the output is shown inside the example directory.
+
+https://github.com/ORGelling/Makedirs For the main repo. Will use submodules 
+soon(ish) (tm)
